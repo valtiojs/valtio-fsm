@@ -1,3 +1,8 @@
+![NPM Version](https://img.shields.io/npm/v/valtio-fsm?style=flat-square&color=%23e8b339)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/valtiojs/valtio-fsm/test.yml?style=flat-square&color=%23e8b339)
+![npm bundle size](https://img.shields.io/bundlephobia/minzip/valtio-fsm?style=flat-square&color=%23e8b339)
+![NPM License](https://img.shields.io/npm/l/valtio-fsm?style=flat-square&color=%23e8b339)
+
 # Valtio FSM
 
 A reactive finite state machine library built on top of [Valtio](https://github.com/pmndrs/valtio).
