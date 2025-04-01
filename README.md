@@ -5,7 +5,7 @@
 
 # Valtio FSM
 
-A reactive finite state machine library built on top of [Valtio](https://github.com/pmndrs/valtio).
+A reactive finite state machine library built on top of [Valtio](https://github.com/pmndrs/valtio) with inspiration from [Simple State Machine](https://github.com/akhil0001/simple-state-machine/blob/HEAD/packages/core/README.md).
 
 ## Features
 
