@@ -1,6 +1,5 @@
 {
   "name": "valtio-fsm",
-  "private": true,
   "version": "1.0.0",
   "type": "module",
   "author": "Michael Sweeney <overthemike@gmail.com>",
