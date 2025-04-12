@@ -1,6 +1,5 @@
-export { default, default as createMachine } from "./createMachine";
+export { default, default as createMachine } from "./createMachine"
 export type {
-	ImageFile,
 	TaskContext,
 	StateConfig,
 	TransitionHistoryItem,
@@ -13,4 +12,4 @@ export type {
 	EventHandler,
 	EventHandlers,
 	InternalMachine,
-} from "./types";
+} from "./types"
