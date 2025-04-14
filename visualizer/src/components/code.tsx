@@ -1,8 +1,19 @@
 import { useRef, useState, useEffect } from "react";
 import Editor, { type Monaco } from '@monaco-editor/react';
+import { js, ts, store, CodeState } from '@/app/store'
+import { useSnapshot } from "valtio";
+
+const TEMPLATE = {
+  importMachine: 'importMachine',
+  emptySymbol: 'emptySymbol',
+  stateDefinition: 'stateDefinition',
+  contextDefinition: 'contextDefinition',
+  stateConfig: 'stateConfig',
+  machineConfig: 'machineConfig',
+  defineMachine: 'defineMachine'
+} as const
 
 const Code = () => {
-  const [code, setCode] = useState<string>("// Type your code here\nconst example: string = 'Hello World';");
   const [language, setLanguage] = useState<string>("typescript");
   const [showDropdown, setShowDropdown] = useState<boolean>(true);
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
@@ -10,6 +21,52 @@ const Code = () => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const hideTimeoutRef = useRef<number | null>(null);
   const topRightAreaRef = useRef<HTMLDivElement>(null);
+  const [template, setTemplate] = useState('')
+  const snap = useSnapshot(store)
+
+  useEffect(() => {
+    const lang = language === 'typescript' ? ts : js
+
+    setTemplate(`${lang[TEMPLATE.importMachine]({
+      useMachineOptions: snap.useMachineOptions
+    })}${lang[TEMPLATE.emptySymbol]({
+      symbolName: snap.symbolName,
+      symbolDescription: snap.symbolDescription
+    })}
+${lang[TEMPLATE.stateDefinition]({
+	nodes: snap.nodes.map(node => node.name),
+  stateVariableName: snap.stateVariableName,
+  stateTypeName: snap.stateTypeName,
+  includeStateDestructure: snap.includeStateDestructure
+})}
+${lang[TEMPLATE.contextDefinition]({ 
+  useEmptySymbol: snap.useEmptySymbol
+})}
+${lang[TEMPLATE.stateConfig]({
+	nodes: store.nodes,
+  useDestructured: snap.includeStateDestructure,
+  stateConfigVariable: snap.stateConfigVariable,
+  contextTypeName: snap.contextTypeName,
+  stateTypeName: snap.stateTypeName
+})}
+${lang[TEMPLATE.machineConfig]({
+  configVariable: snap.configVariable,
+  stateTypeName: snap.stateTypeName,
+  enableHistory: snap.enableHistory,
+  historySize: snap.historySize,
+})}
+
+${lang[TEMPLATE.defineMachine]({
+  machineVariable: snap.machineVariable,
+  initialStateVarable: snap.initialStateVariable,
+  stateConfigVariable: snap.stateConfigVariable,
+  contextVariable: snap.contextVariable,
+  storeVariable: snap.storeVariable,
+  machineConfigVariable: snap.machineConfigVariable,
+  useMachineConfig: snap.useMachineOptions
+})}
+`)
+  }, [language, snap])
 
   // Hide dropdown after 3 seconds initially
   useEffect(() => {
@@ -123,26 +180,28 @@ const Code = () => {
         onBlur={handleDropdownBlur}
       >
         <select 
-          className="border rounded bg-slate-300 p-1"
+          className="border rounded bg-slate-600 p-1"
           value={language}
           onChange={(e) => setLanguage(e.target.value)}
         >
           <option value="typescript">TypeScript</option>
           <option value="javascript">JavaScript</option>
-          <option value="json">JSON</option>
         </select>
       </div>
+
+
       
       {/* Monaco Editor */}
       <div className="flex-1">
         <Editor
           height="100%"
           language={language}
-          value={code}
+          value={template}
           theme="vs-dark"
           onChange={handleEditorChange}
           onMount={handleEditorDidMount}
           options={{
+            readOnly: true,
             minimap: { enabled: true },
             fontSize: 14,
             wordWrap: 'on',
