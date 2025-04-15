@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import Editor, { type Monaco } from '@monaco-editor/react';
-import { js, ts, store, CodeState } from '@/app/store'
+import { js, ts, codeStore } from '@/app/store'
 import { useSnapshot } from "valtio";
 
 const TEMPLATE = {
@@ -22,17 +22,17 @@ const Code = () => {
   const hideTimeoutRef = useRef<number | null>(null);
   const topRightAreaRef = useRef<HTMLDivElement>(null);
   const [template, setTemplate] = useState('')
-  const snap = useSnapshot(store)
+  const snap = useSnapshot(codeStore)
 
   useEffect(() => {
     const lang = language === 'typescript' ? ts : js
 
     setTemplate(`${lang[TEMPLATE.importMachine]({
       useMachineOptions: snap.useMachineOptions
-    })}${lang[TEMPLATE.emptySymbol]({
+    })}${snap.useEmptySymbol ? `${lang[TEMPLATE.emptySymbol]({
       symbolName: snap.symbolName,
       symbolDescription: snap.symbolDescription
-    })}
+    })}` : ''}
 ${lang[TEMPLATE.stateDefinition]({
 	nodes: snap.nodes.map(node => node.name),
   stateVariableName: snap.stateVariableName,
@@ -43,7 +43,7 @@ ${lang[TEMPLATE.contextDefinition]({
   useEmptySymbol: snap.useEmptySymbol
 })}
 ${lang[TEMPLATE.stateConfig]({
-	nodes: store.nodes,
+	nodes: codeStore.nodes,
   useDestructured: snap.includeStateDestructure,
   stateConfigVariable: snap.stateConfigVariable,
   contextTypeName: snap.contextTypeName,
@@ -141,7 +141,7 @@ ${lang[TEMPLATE.defineMachine]({
 
   const handleEditorChange = (value: string | undefined) => {
     if (value !== undefined) {
-      setCode(value);
+      setTemplate(value);
     }
   };
 
@@ -201,7 +201,7 @@ ${lang[TEMPLATE.defineMachine]({
           onChange={handleEditorChange}
           onMount={handleEditorDidMount}
           options={{
-            readOnly: true,
+            
             minimap: { enabled: true },
             fontSize: 14,
             wordWrap: 'on',

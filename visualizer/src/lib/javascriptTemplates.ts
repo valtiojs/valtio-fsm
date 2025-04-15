@@ -73,7 +73,7 @@ export const contextDefinition = ({
  * Context Definition
  */
 // This is an example context definition - replace with your own
-const initialContext: Context = {
+const initialContext = {
 	name: ${useEmptySymbol ? "EMPTY" : "''"},
 	age: ${useEmptySymbol ? "EMPTY" : "0"}
 }`

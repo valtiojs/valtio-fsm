@@ -4,7 +4,7 @@ export * as js from "@/lib/javascriptTemplates"
 export * as ts from "@/lib/typescriptTemplates"
 
 const initialStateNode: StateNode = {
-	name: "init",
+	name: "idle",
 	transitions: [],
 	isInitial: true,
 }
@@ -28,13 +28,13 @@ export interface CodeState {
 	contextTypeName: string
 	configVariable: string
 	enableHistory: string
-	historySize: 0
+	historySize: number
 	machineVariable: string
 	machineConfigVariable: string
 	contextVariable: string
 	initialStateVariable: string
 	storeVariable: string
-	language: "typescript"
+	language: "typescript" | "javascript"
 }
 
 export const initialState: CodeState = {
@@ -59,4 +59,4 @@ export const initialState: CodeState = {
 	language: "typescript",
 }
 
-export const store = proxy(deepClone(initialState))
+export const codeStore = proxy(deepClone(initialState))

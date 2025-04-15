@@ -4,7 +4,7 @@ import { AppSidebar } from "@/components/app-sidebar"
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <SidebarProvider>
-      <AppSidebar />
+      <AppSidebar/>
       <main className='w-dvw h-dvh'>
         <SidebarTrigger className='absolute z-50 cursor-pointer' />
         {children}

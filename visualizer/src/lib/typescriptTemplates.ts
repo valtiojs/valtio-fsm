@@ -1,4 +1,4 @@
-import { StateNode } from "@/app/store"
+import type { StateNode } from "@/app/store"
 
 export const importMachine = ({
 	useMachineOptions = true,
@@ -15,7 +15,11 @@ export const emptySymbol = ({
 	symbolDescription: string
 }) => `
 // Symbol to use as default empty values
-const ${symbolName} = Symbol('${symbolDescription}')`
+const ${symbolName} = Symbol('${symbolDescription}')
+// Generic to intialize with empty values
+export type Initial<T> = {
+	[K in keyof T]: T[K] | typeof EMPTY
+}`
 
 export const stateDefinition = ({
 	nodes,
@@ -90,7 +94,7 @@ export interface Context {
 	age: number
 }
 
-const initialContext: Context = {
+const initialContext: ${useEmptySymbol ? "Initial<Context>" : "Context"} = {
 	name: ${useEmptySymbol ? "EMPTY" : "''"},
 	age: ${useEmptySymbol ? "EMPTY" : "0"}
 }`
