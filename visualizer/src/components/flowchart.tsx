@@ -8,6 +8,7 @@ import {
   useEdgesState,
   type OnConnect,
   useReactFlow,
+  MarkerType,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { initialNodes, nodeTypes } from '../nodes';
@@ -15,17 +16,31 @@ import { initialEdges, edgeTypes } from '../edges';
 import { type DragEvent, useCallback, useRef, useState } from 'react';
 import {useDnD } from './DnDContext';
 import type { StateNode } from '@/nodes/types';
+import FloatingConnectionLine from '@/components/FloatingConnectionLine'
+import { codeStore } from '@/app/store'
+import { useSnapshot } from 'valtio';
+
 
 let id = 0;
 const getId = () => `dndnode_${id++}`;
 
 const FlowChart = () => {
   const reactFlowWrapper = useRef<HTMLDivElement>(null);
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+  const nodes = useSnapshot(codeStore.nodes)
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const onConnect: OnConnect = useCallback(
-    (connection) => setEdges((edges) => addEdge(connection, edges)),
-    [setEdges]
+    (params) =>
+      setEdges((eds) =>
+        addEdge(
+          {
+            ...params,
+            type: 'floating',
+            markerEnd: { type: MarkerType.Arrow },
+          },
+          eds,
+        ),
+      ),
+    [setEdges],
   );
   const [colorMode, _setColorMode] = useState<'light' | 'dark' | 'system'>('dark')
   const [type] = useDnD();
@@ -35,6 +50,7 @@ const FlowChart = () => {
     event.preventDefault();
     event.dataTransfer.dropEffect = 'move';
   }, []);
+
 
   const onDrop = useCallback(
     (event: DragEvent) => {
@@ -56,26 +72,30 @@ const FlowChart = () => {
 
       // Create the node with the correct type
       const newNode = {
-        id: getId(),
-        type: 'state-node', // This should match one of your defined node types
-        position,
-        data: { label: `${type} node` },
+        name: 'node',
+        transitions: [],
+        isInitial: nodes.length === 0,
+        flowNode: {
+          id: getId(),
+          position,
+          data: { label: 'node' },
+        }
       }; // Cast to your AppNode type
 
-      setNodes((nds) => nds.concat(newNode as StateNode));
+      codeStore.nodes.push(newNode)
     },
-    [screenToFlowPosition, type, setNodes],
+    [screenToFlowPosition, type, nodes],
   );
 
   return (
   <div ref={reactFlowWrapper} style={{ width: '100%', height: '100%' }}>
     <ReactFlow
       className='w-fit h-fit'
-      nodes={nodes}
+      nodes={nodes.map(n => n.flowNode)}
       nodeTypes={nodeTypes}
-      onNodesChange={onNodesChange}
       edges={edges}
       edgeTypes={edgeTypes}
+      connectionLineComponent={FloatingConnectionLine}
       onEdgesChange={onEdgesChange}
       onConnect={onConnect}
       onDrop={onDrop}

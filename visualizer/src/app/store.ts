@@ -1,18 +1,34 @@
+import type { XYPosition } from "@xyflow/react"
 import { proxy } from "valtio"
 import { deepClone } from "valtio/utils"
 export * as js from "@/lib/javascriptTemplates"
 export * as ts from "@/lib/typescriptTemplates"
+import { nanoid } from "nanoid"
 
 const initialStateNode: StateNode = {
 	name: "idle",
 	transitions: [],
 	isInitial: true,
+	flowNode: {
+		id: nanoid(),
+		position: { x: -200, y: 0 },
+		data: {
+			label: "idle",
+		},
+	},
 }
 
 export interface StateNode {
 	name: string
 	transitions: string[]
 	isInitial: boolean
+	flowNode: {
+		id: string
+		position: XYPosition
+		data: {
+			label: string
+		}
+	}
 }
 
 export interface CodeState {
