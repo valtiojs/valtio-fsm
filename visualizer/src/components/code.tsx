@@ -1,7 +1,7 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import Editor, { type Monaco } from '@monaco-editor/react';
 import { js, ts, codeStore } from '@/app/store'
-import { useSnapshot } from "valtio";
+import { useSnapshot, subscribe } from "valtio";
 
 const TEMPLATE = {
   importMachine: 'importMachine',
@@ -26,47 +26,53 @@ const Code = () => {
 
   useEffect(() => {
     const lang = language === 'typescript' ? ts : js
+    subscribe(codeStore, () => {
+      updateCode(lang, snap)
+    })
+    updateCode(lang, snap)
+  }, [snap, language])
 
+  const updateCode = useCallback((lang: typeof ts | typeof js, snapshot: typeof snap) => {
     setTemplate(`${lang[TEMPLATE.importMachine]({
-      useMachineOptions: snap.useMachineOptions
-    })}${snap.useEmptySymbol ? `${lang[TEMPLATE.emptySymbol]({
-      symbolName: snap.symbolName,
-      symbolDescription: snap.symbolDescription
+      useMachineOptions: snapshot.useMachineOptions
+    })}${snapshot.useEmptySymbol ? `${lang[TEMPLATE.emptySymbol]({
+      symbolName: snapshot.symbolName,
+      symbolDescription: snapshot.symbolDescription
     })}` : ''}
 ${lang[TEMPLATE.stateDefinition]({
-	nodes: snap.nodes.map(node => node.name),
-  stateVariableName: snap.stateVariableName,
-  stateTypeName: snap.stateTypeName,
-  includeStateDestructure: snap.includeStateDestructure
+	nodes: snapshot.nodes.map(node => node.name),
+  stateVariableName: snapshot.stateVariableName,
+  stateTypeName: snapshot.stateTypeName,
+  includeStateDestructure: snapshot.includeStateDestructure
 })}
 ${lang[TEMPLATE.contextDefinition]({ 
-  useEmptySymbol: snap.useEmptySymbol
+  useEmptySymbol: snapshot.useEmptySymbol
 })}
 ${lang[TEMPLATE.stateConfig]({
 	nodes: codeStore.nodes,
-  useDestructured: snap.includeStateDestructure,
-  stateConfigVariable: snap.stateConfigVariable,
-  contextTypeName: snap.contextTypeName,
-  stateTypeName: snap.stateTypeName
+  useDestructured: snapshot.includeStateDestructure,
+  stateConfigVariable: snapshot.stateConfigVariable,
+  contextTypeName: snapshot.contextTypeName,
+  stateTypeName: snapshot.stateTypeName
 })}
 ${lang[TEMPLATE.machineConfig]({
-  configVariable: snap.configVariable,
-  stateTypeName: snap.stateTypeName,
-  enableHistory: snap.enableHistory,
-  historySize: snap.historySize,
+  configVariable: snapshot.configVariable,
+  stateTypeName: snapshot.stateTypeName,
+  enableHistory: snapshot.enableHistory,
+  historySize: snapshot.historySize,
 })}
 
 ${lang[TEMPLATE.defineMachine]({
-  machineVariable: snap.machineVariable,
-  initialStateVarable: snap.initialStateVariable,
-  stateConfigVariable: snap.stateConfigVariable,
-  contextVariable: snap.contextVariable,
-  storeVariable: snap.storeVariable,
-  machineConfigVariable: snap.machineConfigVariable,
-  useMachineConfig: snap.useMachineOptions
+  machineVariable: snapshot.machineVariable,
+  initialStateVarable: snapshot.initialStateVariable,
+  stateConfigVariable: snapshot.stateConfigVariable,
+  contextVariable: snapshot.contextVariable,
+  storeVariable: snapshot.storeVariable,
+  machineConfigVariable: snapshot.machineConfigVariable,
+  useMachineConfig: snapshot.useMachineOptions
 })}
 `)
-  }, [language, snap])
+  }, [])
 
   // Hide dropdown after 3 seconds initially
   useEffect(() => {

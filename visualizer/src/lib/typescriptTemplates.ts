@@ -52,7 +52,6 @@ export type ${stateTypeName} = (typeof ${stateVariableName})[keyof typeof ${stat
 		const nodesStringLength = nodes.reduce((total, str) => {
 			return total + str.length + 2
 		}, 19) // 19 is the combined length of the characters we have so far
-		console.log(nodesStringLength)
 
 		if (nodesStringLength > 80) {
 			template += `

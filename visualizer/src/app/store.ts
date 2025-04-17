@@ -1,24 +1,11 @@
 import type { XYPosition } from "@xyflow/react"
-import { proxy } from "valtio"
+import { proxy, subscribe } from "valtio"
 import { deepClone } from "valtio/utils"
 export * as js from "@/lib/javascriptTemplates"
 export * as ts from "@/lib/typescriptTemplates"
-import { nanoid } from "nanoid"
-
-const initialStateNode: StateNode = {
-	name: "idle",
-	transitions: [],
-	isInitial: true,
-	flowNode: {
-		id: nanoid(),
-		position: { x: -200, y: 0 },
-		data: {
-			label: "idle",
-		},
-	},
-}
 
 export interface StateNode {
+	id: string
 	name: string
 	transitions: string[]
 	isInitial: boolean
@@ -51,10 +38,11 @@ export interface CodeState {
 	initialStateVariable: string
 	storeVariable: string
 	language: "typescript" | "javascript"
+	selectedNode: number
 }
 
 export const initialState: CodeState = {
-	nodes: [initialStateNode],
+	nodes: [],
 	useEmptySymbol: true,
 	symbolName: "EMPTY",
 	symbolDescription: "Empty Value",
@@ -70,9 +58,10 @@ export const initialState: CodeState = {
 	machineVariable: "machine",
 	machineConfigVariable: "machineConfig",
 	contextVariable: "initialContext",
-	initialStateVariable: initialStateNode.name,
+	initialStateVariable: "idle",
 	storeVariable: "store",
 	language: "typescript",
+	selectedNode: -1,
 }
 
 export const codeStore = proxy(deepClone(initialState))

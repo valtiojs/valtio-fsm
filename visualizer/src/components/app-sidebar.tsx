@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Calendar, ChevronRight, Home, Inbox, PlusSquare, Search, Settings, Code } from "lucide-react"
+import { Calendar, ChevronRight, Home, Inbox, PlusSquare, Search, Settings, Code, Move } from "lucide-react"
 
 import {
   Sidebar,
@@ -14,12 +14,14 @@ import { useDnD } from './DnDContext';
 import type { DragEvent } from "react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@radix-ui/react-collapsible";
 import { StateMachineForm } from "./EditorPropertiesForm";
-
+import { useSnapshot } from 'valtio'
+import { codeStore } from '@/app/store'
+import StatePropertiesForm from "./StatePropertiesForm";
 
 export function AppSidebar() {
   const [_, setType] = useDnD();
-  const [isNodeOpen, setIsNodeOpen] = useState(false);
   const [isOptionsOpen, setIsOptionsOpen] = useState(false);
+  const snap = useSnapshot(codeStore)
  
   const onDragStart = (event: DragEvent, nodeType: string) => {
     setType(nodeType);
@@ -39,40 +41,24 @@ export function AppSidebar() {
         </div>
         
         {/* Add State Node section */}
-        <Collapsible 
-          open={isNodeOpen} 
-          onOpenChange={setIsNodeOpen}
-        >
-          <SidebarGroup>
-            <SidebarGroupLabel>
-              <CollapsibleTrigger asChild>
-                <SidebarMenuButton>
-                  <PlusSquare className="h-4 w-4 mr-2" />
-                  <span className="group-data-[collapsible=icon]:hidden">Add State Node</span>
-                  <ChevronRight 
-                    className={`ml-auto transition-transform duration-300 ease-in-out group-data-[collapsible=icon]:hidden ${
-                      isNodeOpen ? "rotate-90" : ""
-                    }`}
-                  />
-                </SidebarMenuButton>
-              </CollapsibleTrigger>
-            </SidebarGroupLabel>
-            <CollapsibleContent>
-              <SidebarGroupContent className="flex flex-col items-center py-4 group-data-[collapsible=icon]:hidden">
-                <div 
-                  className="bg-stone-800 w-48 text-center p-2.5" 
-                  onDragStart={(event) => onDragStart(event, 'default')} 
-                  draggable
-                >
-                  State Node
-                </div>
-              </SidebarGroupContent>
-            </CollapsibleContent>
-          </SidebarGroup>
-        </Collapsible>
-        
+
+        <SidebarGroup>
+          <SidebarGroupLabel>
+            <PlusSquare className="h-4 w-4 mr-2" />
+            <span className="group-data-[collapsible=icon]:hidden">Add State Node</span>
+          </SidebarGroupLabel>
+          <SidebarGroupContent className="flex flex-col items-center py-4 group-data-[collapsible=icon]:hidden">
+            <div 
+              className="bg-stone-800 w-48 text-center flex justify-evenly p-2.5 gap-5 text-base" 
+              onDragStart={(event) => onDragStart(event, 'default')} 
+              draggable
+            >
+              <Move /> Drag me
+            </div>
+            <StatePropertiesForm />
+          </SidebarGroupContent>
+        </SidebarGroup>
         <SidebarSeparator className='group-data-[collapsible=icon]:hidden' />
-        
         {/* Code Editor Options section */}
         <Collapsible 
           open={isOptionsOpen} 

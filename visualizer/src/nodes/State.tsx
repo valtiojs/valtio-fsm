@@ -1,15 +1,37 @@
-import { Handle, Position, type NodeProps } from '@xyflow/react';
+import { Handle, Position, useConnection, type NodeProps } from '@xyflow/react';
+import { Move } from "@mynaui/icons-react";
+import { useSnapshot } from 'valtio'
+import { codeStore } from '@/app/store'
+ 
+export default function stateNode({ id }:NodeProps) {
+  const storeNodes = useSnapshot(codeStore.nodes)
 
-import type { AppNode } from './types';
+  const connection = useConnection();
+ 
+  const isTarget = connection.inProgress && connection.fromNode.id !== id;
 
-export function StateNode({
-  data,
-}: NodeProps<AppNode>) {
-
+  const label = storeNodes.find(n => Number(n.flowNode.id) === Number(id))?.name || ''
+ 
   return (
-    <div className="react-flow__node-default">
-      {data.label && <div>{data.label}</div>}
-      <Handle type="source" position={Position.Bottom} />
+    <div className="flex justify-between gap-5 customNode items-center">
+      <span className='p-3'><Move  className="drag-handle__custom" /></span>
+      <div
+        className="customNodeBody p-3"
+      >
+        {!connection.inProgress && (
+          <Handle
+            className="customHandle"
+            position={Position.Right}
+            type="source"
+          />
+        )}
+        {/* We want to disable the target handle, if the connection was started from this node */}
+        {(!connection.inProgress || isTarget) && (
+          <Handle className="customHandle" position={Position.Left} type="target" isConnectableStart={false} />
+        )}
+        {label as string}
+        
+      </div>
     </div>
-  )
+  );
 }
