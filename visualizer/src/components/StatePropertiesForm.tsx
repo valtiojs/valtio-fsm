@@ -3,37 +3,39 @@ import { useSnapshot } from 'valtio';
 import { codeStore as store} from '@/app/store';
 import { Label } from './ui/label';
 import { Input } from './ui/input';
-import { subscribe } from 'valtio';
 
 export default function StateMachineForm() {
-  const [id, setId] = useState(-1)
-  const [name, setName] = useState('')
-
+  const snap = useSnapshot(store);
+  const [name, setName] = useState('');
+  
+  // Update local state when selected node changes
   useEffect(() => {
-    subscribe(store, () => {
-      const selectedId = store.selectedNode
-      const storeNode = store.nodes.find(n => Number(n.id) === id)
-      const name = storeNode ? storeNode.name : ''
-
-      if (id !== selectedId) {
-        setId(store.selectedNode)
-        setName(name)
-      }
-    })
-  }, [id])
+    const selectedId = snap.selectedNode;
+    // Find the node with the matching ID
+    const selectedNode = snap.nodes.find(n => Number(n.flowNode.id) === selectedId);
+    
+    // Update the name state with the selected node's name
+    if (selectedNode) {
+      setName(selectedNode.name);
+    } else {
+      setName('');
+    }
+  }, [snap.selectedNode, snap.nodes]);
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setName((_prev) => {
-      const storeNode = store.nodes.find(n => id === Number(n.flowNode.id))
-      if (storeNode) {
-        storeNode.name = e.target.value
-      }
-      return e.target.value
-    })
+    const newName = e.target.value;
+    setName(newName);
+    
+    // Update the store directly
+    const nodeIndex = store.nodes.findIndex(n => Number(n.flowNode.id) === store.selectedNode);
+    if (nodeIndex !== -1) {
+      store.nodes[nodeIndex].name = newName;
+    }
   }
 
-  if (id === -1) {
-    return ''
+  // Only render the form if a node is selected
+  if (snap.selectedNode === -1) {
+    return null;
   }
 
   return (
