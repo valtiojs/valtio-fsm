@@ -7,7 +7,7 @@ import { Input } from './ui/input';
 export default function StateMachineForm() {
   const snap = useSnapshot(store);
   const [name, setName] = useState('');
-  
+
   // Update local state when selected node changes
   useEffect(() => {
     const selectedId = snap.selectedNode;

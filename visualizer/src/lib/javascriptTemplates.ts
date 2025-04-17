@@ -1,3 +1,5 @@
+import type { StateNode } from "@/app/store"
+
 export const importMachine = ({
 	useMachineOptions = true,
 }: {
@@ -87,10 +89,7 @@ export const stateConfig = ({
 	stateConfigVariable = "stateConfig",
 	stateTypeName = "State",
 }: {
-	nodes: {
-		name: string
-		transitions: string[]
-	}[]
+	nodes: StateNode[]
 	useDestructured?: boolean
 	stateConfigVariable?: string
 	stateTypeName?: string
@@ -106,7 +105,7 @@ export const ${stateConfigVariable} = {`
 	${getVarName(node.name)}: {
 		transitions: [ `
 		for (const transition of node.transitions) {
-			template += ` ${getVarName(transition)},`
+			template += ` ${getVarName(transition.name)},`
 		}
 		template = `${template.substring(0, template.length - 1)} ` // remove last comma and add space
 		template += `]

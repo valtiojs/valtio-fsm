@@ -7,7 +7,7 @@ export * as ts from "@/lib/typescriptTemplates"
 export interface StateNode {
 	id: string
 	name: string
-	transitions: string[]
+	transitions: StateNode[]
 	isInitial: boolean
 	flowNode: {
 		id: string

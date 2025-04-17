@@ -126,7 +126,7 @@ export const ${stateConfigVariable}: StateConfig<${stateTypeName}, ${contextType
 	${getVarName(node.name)}: {
 		transitions: [ `
 		for (const t of node.transitions) {
-			template += ` ${getVarName(t)},`
+			template += ` ${getVarName(t.name)},`
 		}
 		template = `${template.substring(0, template.length - 1)} ` // remove last comma and add space
 

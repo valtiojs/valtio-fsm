@@ -53,7 +53,7 @@ const FlowChart = () => {
       const sourceNode = codeStore.nodes.find(n => n.flowNode.id === source)
       const targetNode = codeStore.nodes.find(n => n.flowNode.id === target)
 
-      if (sourceNode && targetNode) sourceNode?.transitions.push(targetNode.name)
+      if (sourceNode && targetNode) sourceNode?.transitions.push(targetNode)
 
       setEdges((eds) =>
         addEdge(
@@ -123,7 +123,7 @@ const FlowChart = () => {
     for(const edge of edges) {
       const sourceNode = codeStore.nodes.find(n => edge.source === n.flowNode.id)
       if (sourceNode) {
-        sourceNode.transitions = sourceNode.transitions.filter(n => n === edge.target)
+        sourceNode.transitions = sourceNode.transitions.filter(n => n.id === edge.target)
       }
     }
   }

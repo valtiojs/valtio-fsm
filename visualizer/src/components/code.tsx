@@ -30,6 +30,7 @@ const Code = () => {
       updateCode(lang, snap)
     })
     updateCode(lang, snap)
+    console.log('updating', snap)
   }, [snap, language])
 
   const updateCode = useCallback((lang: typeof ts | typeof js, snapshot: typeof snap) => {
@@ -49,7 +50,7 @@ ${lang[TEMPLATE.contextDefinition]({
   useEmptySymbol: snapshot.useEmptySymbol
 })}
 ${lang[TEMPLATE.stateConfig]({
-	nodes: codeStore.nodes,
+	nodes: snapshot.nodes,
   useDestructured: snapshot.includeStateDestructure,
   stateConfigVariable: snapshot.stateConfigVariable,
   contextTypeName: snapshot.contextTypeName,
