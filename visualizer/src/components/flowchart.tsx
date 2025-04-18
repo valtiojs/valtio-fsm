@@ -123,7 +123,7 @@ const FlowChart = () => {
     for(const edge of edges) {
       const sourceNode = codeStore.nodes.find(n => edge.source === n.flowNode.id)
       if (sourceNode) {
-        sourceNode.transitions = sourceNode.transitions.filter(n => n.id === edge.target)
+        sourceNode.transitions = sourceNode.transitions.filter(n => n.flowNode.id !== edge.target)
       }
     }
   }
@@ -132,8 +132,15 @@ const FlowChart = () => {
     // Get array of IDs to delete
     const idsToDelete = nodes.map(node => node.id);
     
-    // Keep only nodes that are NOT in the list of IDs to delete
-    codeStore.nodes = codeStore.nodes.filter((codeStoreNode) => 
+    // First, remove transitions that point to nodes being deleted
+    codeStore.nodes.forEach(sourceNode => {
+      sourceNode.transitions = sourceNode.transitions.filter(
+        targetNode => !idsToDelete.includes(targetNode.flowNode.id)
+      );
+    });
+    
+    // Then, remove the nodes themselves
+    codeStore.nodes = codeStore.nodes.filter(codeStoreNode => 
       !idsToDelete.includes(codeStoreNode.flowNode.id)
     );
   };
