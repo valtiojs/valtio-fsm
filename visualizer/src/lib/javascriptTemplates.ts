@@ -20,7 +20,7 @@ export const stateDefinition = ({
 	let template = `/**
  * State Definition 
  */
-export const ${stateVariableName} = {`
+export const ${stateVariableName} = { `
 	for (const node of nodes) {
 		template += `
   ${node}: '${node}',`
@@ -48,7 +48,7 @@ export const {
 			template += `} = ${stateVariableName}`
 		} else {
 			template += `
-export const {`
+export const { `
 			for (const node of nodes) {
 				template += ` ${node},`
 			}
@@ -93,7 +93,7 @@ export const stateConfig = ({
 	let template = `/**
  * Transitions - Specify which state can trasition to which other states
  */
-export const ${stateConfigVariable} = {`
+export const ${stateConfigVariable} = { `
 	for (const node of nodes) {
 		template += `
 	${getVarName(node.name)}: {
