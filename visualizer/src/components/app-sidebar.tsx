@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Calendar, ChevronRight, Home, Inbox, PlusSquare, Search, Settings, Code, Move } from "lucide-react"
+import { ChevronRight, PlusSquare, Code, Move } from "lucide-react"
 
 import {
   Sidebar,
@@ -14,14 +14,11 @@ import { useDnD } from './DnDContext';
 import type { DragEvent } from "react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@radix-ui/react-collapsible";
 import { StateMachineForm } from "./EditorPropertiesForm";
-import { useSnapshot } from 'valtio'
-import { codeStore } from '@/app/store'
 import StatePropertiesForm from "./StatePropertiesForm";
 
 export function AppSidebar() {
   const [_, setType] = useDnD();
   const [isOptionsOpen, setIsOptionsOpen] = useState(false);
-  const snap = useSnapshot(codeStore)
  
   const onDragStart = (event: DragEvent, nodeType: string) => {
     setType(nodeType);

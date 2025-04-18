@@ -1,7 +1,5 @@
-import { useEffect } from 'react';
 import { useSnapshot } from 'valtio';
 import { codeStore as store, type CodeState } from '@/app/store';
-import { proxy } from 'valtio';
 
 // Import shadcn components - only using the basic components, not the Form components
 import { Input } from "@/components/ui/input";

@@ -24,7 +24,6 @@ import { useDnD } from './DnDContext';
 import FloatingConnectionLine from '@/components/FloatingConnectionLine';
 import { codeStore } from '@/app/store';
 import { subscribe, useSnapshot } from 'valtio';
-import { CodeWrap, StateNode } from '@/nodes/types';
 
 let id = 0;
 const getId = () => `${id++}`;
@@ -133,11 +132,11 @@ const FlowChart = () => {
     const idsToDelete = nodes.map(node => node.id);
     
     // First, remove transitions that point to nodes being deleted
-    codeStore.nodes.forEach(sourceNode => {
+    for (const sourceNode of codeStore.nodes) {
       sourceNode.transitions = sourceNode.transitions.filter(
         targetNode => !idsToDelete.includes(targetNode.flowNode.id)
       );
-    });
+    }
     
     // Then, remove the nodes themselves
     codeStore.nodes = codeStore.nodes.filter(codeStoreNode => 

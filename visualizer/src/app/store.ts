@@ -1,5 +1,5 @@
 import type { XYPosition } from "@xyflow/react"
-import { proxy, subscribe } from "valtio"
+import { proxy } from "valtio"
 import { deepClone } from "valtio/utils"
 export * as js from "@/lib/javascriptTemplates"
 export * as ts from "@/lib/typescriptTemplates"

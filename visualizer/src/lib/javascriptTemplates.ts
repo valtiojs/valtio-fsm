@@ -1,10 +1,6 @@
 import type { StateNode } from "@/app/store"
 
-export const importMachine = ({
-	useMachineOptions = true,
-}: {
-	useMachineOptions?: boolean
-} = {}) => `import { createMachine } from 'valtio-fsm'`
+export const importMachine = () => `import { createMachine } from 'valtio-fsm'`
 
 export const emptySymbol = ({
 	symbolName = "EMPTY",
@@ -87,12 +83,10 @@ export const stateConfig = ({
 	nodes,
 	useDestructured = true,
 	stateConfigVariable = "stateConfig",
-	stateTypeName = "State",
 }: {
 	nodes: StateNode[]
 	useDestructured?: boolean
 	stateConfigVariable?: string
-	stateTypeName?: string
 }) => {
 	const getVarName = (str: string) => (useDestructured ? `${str}` : `'${str}'`)
 

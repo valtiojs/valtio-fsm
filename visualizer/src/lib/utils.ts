@@ -6,7 +6,7 @@ export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs))
 }
 
-import { Position, type MarkerType, type Node } from "@xyflow/react"
+import { Position } from "@xyflow/react"
 
 // this helper function returns the intersection point
 // of the line between the center of the intersectionNode and the target node
