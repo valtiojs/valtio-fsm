@@ -1,7 +1,7 @@
 import { Handle, Position, useConnection, type NodeProps } from '@xyflow/react';
 import { Move } from "@mynaui/icons-react";
 import { useSnapshot } from 'valtio'
-import { codeStore } from '@/app/store'
+import { codeStore, type StateNode } from '@/app/store'
  
 export default function stateNode({ id }:NodeProps) {
   const storeNodes = useSnapshot(codeStore.nodes)
@@ -10,7 +10,7 @@ export default function stateNode({ id }:NodeProps) {
  
   const isTarget = connection.inProgress && connection.fromNode.id !== id;
 
-  const label = storeNodes.find(n => Number(n.flowNode.id) === Number(id))?.name || ''
+  const label = storeNodes.find((n: StateNode) => Number(n.flowNode.id) === Number(id))?.name || ''
  
   return (
     <div className="flex justify-between gap-5 customNode items-center">

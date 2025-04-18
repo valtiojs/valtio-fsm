@@ -22,7 +22,7 @@ import { initialEdges, edgeTypes } from '../edges';
 import { type DragEvent, useCallback, useRef, useState, useEffect } from 'react';
 import { useDnD } from './DnDContext';
 import FloatingConnectionLine from '@/components/FloatingConnectionLine';
-import { codeStore } from '@/app/store';
+import { codeStore, type StateNode } from '@/app/store';
 import { subscribe, useSnapshot } from 'valtio';
 
 let id = 0;
@@ -36,21 +36,21 @@ const FlowChart = () => {
   
   // Create local nodes state that will sync with the store
   const [nodes, setNodes, onNodesChange] = useNodesState(
-    storeNodes.map(n => n.flowNode)
+    storeNodes.map((n: StateNode) => n.flowNode)
   );
   
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   
   // Effect to update local nodes when store nodes change
   useEffect(() => {
-    setNodes(storeNodes.map(n => n.flowNode));
+    setNodes(storeNodes.map((n: StateNode) => n.flowNode));
   }, [storeNodes, setNodes]);
   
   const onConnect: OnConnect = useCallback(
     (params) => {
       const { source, target } = params
-      const sourceNode = codeStore.nodes.find(n => n.flowNode.id === source)
-      const targetNode = codeStore.nodes.find(n => n.flowNode.id === target)
+      const sourceNode = codeStore.nodes.find((n: StateNode) => n.flowNode.id === source)
+      const targetNode = codeStore.nodes.find((n: StateNode) => n.flowNode.id === target)
 
       if (sourceNode && targetNode) sourceNode?.transitions.push(targetNode)
 
@@ -120,9 +120,9 @@ const FlowChart = () => {
 
   const onEdgesDelete: OnEdgesDelete = (edges: Edge[]) => {
     for(const edge of edges) {
-      const sourceNode = codeStore.nodes.find(n => edge.source === n.flowNode.id)
+      const sourceNode = codeStore.nodes.find((n: StateNode) => edge.source === n.flowNode.id)
       if (sourceNode) {
-        sourceNode.transitions = sourceNode.transitions.filter(n => n.flowNode.id !== edge.target)
+        sourceNode.transitions = sourceNode.transitions.filter((n: StateNode) => n.flowNode.id !== edge.target)
       }
     }
   }
@@ -134,12 +134,12 @@ const FlowChart = () => {
     // First, remove transitions that point to nodes being deleted
     for (const sourceNode of codeStore.nodes) {
       sourceNode.transitions = sourceNode.transitions.filter(
-        targetNode => !idsToDelete.includes(targetNode.flowNode.id)
+        (targetNode: StateNode) => !idsToDelete.includes(targetNode.flowNode.id)
       );
     }
     
     // Then, remove the nodes themselves
-    codeStore.nodes = codeStore.nodes.filter(codeStoreNode => 
+    codeStore.nodes = codeStore.nodes.filter((codeStoreNode: StateNode) => 
       !idsToDelete.includes(codeStoreNode.flowNode.id)
     );
   };
@@ -158,7 +158,7 @@ const FlowChart = () => {
 
   // Function to update node positions in the store - memoized
   const updateNodePosition = useCallback((nodeId: string, position: { x: number, y: number }) => {
-    const nodeIndex = codeStore.nodes.findIndex(n => n.flowNode.id === nodeId);
+    const nodeIndex = codeStore.nodes.findIndex((n: StateNode) => n.flowNode.id === nodeId);
     if (nodeIndex !== -1) {
       codeStore.nodes[nodeIndex].flowNode.position = position;
     }
