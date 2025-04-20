@@ -54,7 +54,8 @@ ${lang[TEMPLATE.stateConfig]({
   useDestructured: snapshot.includeStateDestructure,
   stateConfigVariable: snapshot.stateConfigVariable,
   contextTypeName: snapshot.contextTypeName,
-  stateTypeName: snapshot.stateTypeName
+  stateTypeName: snapshot.stateTypeName,
+  useEmptySymbol: snapshot.useEmptySymbol
 })}
 ${lang[TEMPLATE.machineConfig]({
   configVariable: snapshot.configVariable,

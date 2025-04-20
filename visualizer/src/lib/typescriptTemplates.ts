@@ -107,12 +107,14 @@ export const stateConfig = ({
 	stateConfigVariable = "stateConfig",
 	contextTypeName = "Context",
 	stateTypeName = "State",
+	useEmptySymbol = true,
 }: {
 	nodes: StateNode[]
 	useDestructured?: boolean
 	stateConfigVariable?: string
 	contextTypeName?: string
 	stateTypeName?: string
+	useEmptySymbol?: boolean
 }) => {
 	const getVarName = (str: string) => (useDestructured ? `${str}` : `'${str}'`)
 
@@ -120,7 +122,7 @@ export const stateConfig = ({
 /**
  * Transitions - Specify which state can trasition to which other states
  */
-export const ${stateConfigVariable}: StateConfig<${stateTypeName}, ${contextTypeName}> = { `
+export const ${stateConfigVariable}: StateConfig<${stateTypeName}, ${useEmptySymbol ? `Initial<${contextTypeName}> | ${contextTypeName}>` : `${contextTypeName}>`} = { `
 	for (const node of nodes) {
 		template += `
 	${getVarName(node.name)}: {
