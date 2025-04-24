@@ -8,7 +8,31 @@ import type {
 	EventHandler,
 } from "./types";
 
-// Create a chainable state machine using Valtio
+/**
+ * Creates a state machine with chainable API backed by Valtio for reactivity
+ * 
+ * @template TState - String literal type representing valid states
+ * @template TContext - Context data type for the state machine
+ * @param initialState - Starting state for the machine
+ * @param stateConfig - Configuration object defining states and transitions
+ * @param initialContext - Initial context data (defaults to empty object)
+ * @param options - Additional configuration options
+ * @returns A chainable state machine instance
+ * 
+ * @example
+ * ```ts
+ * const machine = createMachine(
+ *   'idle',
+ *   {
+ *     idle: { transitions: ['loading'] },
+ *     loading: { transitions: ['success', 'error'] },
+ *     success: { transitions: ['idle'] },
+ *     error: { transitions: ['idle'] }
+ *   },
+ *   { data: null, error: null }
+ * );
+ * ```
+ */
 const createMachine = <
 	TState extends string,
 	TContext extends Record<string, unknown>,
