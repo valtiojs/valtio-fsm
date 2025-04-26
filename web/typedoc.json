@@ -1,15 +1,36 @@
 {
   "entryPoints": [
-    "./src/index.ts"
+    "../src/index.ts"
   ],
-  "out": "./docs",
   "plugin": [
     "typedoc-plugin-markdown",
+    "typedoc-vitepress-theme"
   ],
+  "out": "./api",
   "excludePrivate": false,
   "excludeProtected": false,
   "excludeExternals": true,
+  "navigation": {
+    "includeCategories": true,
+    "includeGroups": true
+  },
   "categorizeByGroup": true,
+  "categoryOrder": [
+    "API",
+    "Event System",
+    "Listeners and Callbacks",
+    "Runtime Configuration",
+    "History Management",
+    "*"
+  ],
+  "navigationLinks": {
+    "API": "/api/modules.html",
+    "GitHub": "https://github.com/valtiojs/valtio-fsm"
+  },
+  "sidebarLinks": {
+    "API": "/api/interfaces/ChainableStateMachine.html",
+    "Function Reference": "/api/functions/createMachine.html"
+  },
   "highlightLanguages": [
     "tsx",
     "jsx",
@@ -29,6 +50,7 @@
   "excludeNotDocumented": false,
   "disableGit": false,
   "pretty": true,
+  "useCodeBlocks": true,
   "exclude": [
     "visualizer",
     "tests",

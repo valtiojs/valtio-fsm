@@ -1,12 +1,14 @@
-[**valtio-fsm**](../README.md)
-
-***
-
 [valtio-fsm](../globals.md) / createMachine
 
 # Function: createMachine()
 
-> **createMachine**\<`TState`, `TContext`\>(`initialState`, `stateConfig`, `initialContext`, `options`): [`ChainableStateMachine`](../interfaces/ChainableStateMachine.md)\<`TState`, `TContext`\>
+```ts
+function createMachine<TState, TContext>(
+   initialState, 
+   stateConfig, 
+   initialContext, 
+options): ChainableStateMachine<TState, TContext>;
+```
 
 Defined in: [createMachine.ts:66](https://github.com/valtiojs/valtio-fsm/blob/e130d8462b1e3f3b9ad04f79c2f25bb6904906cd/src/createMachine.ts#L66)
 

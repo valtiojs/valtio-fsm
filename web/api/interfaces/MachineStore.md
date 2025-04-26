@@ -1,7 +1,3 @@
-[**valtio-fsm**](../README.md)
-
-***
-
 [valtio-fsm](../globals.md) / MachineStore
 
 # Interface: MachineStore\<TState, TContext\>
@@ -28,7 +24,9 @@ Context data type for the state machine
 
 ### context
 
-> **context**: `TContext`
+```ts
+context: TContext;
+```
 
 Defined in: [types.ts:73](https://github.com/valtiojs/valtio-fsm/blob/e130d8462b1e3f3b9ad04f79c2f25bb6904906cd/src/types.ts#L73)
 
@@ -38,7 +36,9 @@ Current context data
 
 ### history
 
-> **history**: [`TransitionHistoryItem`](TransitionHistoryItem.md)\<`TState`\>[]
+```ts
+history: TransitionHistoryItem<TState>[];
+```
 
 Defined in: [types.ts:75](https://github.com/valtiojs/valtio-fsm/blob/e130d8462b1e3f3b9ad04f79c2f25bb6904906cd/src/types.ts#L75)
 
@@ -48,7 +48,9 @@ List of historical transitions
 
 ### historyEnabled
 
-> **historyEnabled**: `boolean`
+```ts
+historyEnabled: boolean;
+```
 
 Defined in: [types.ts:77](https://github.com/valtiojs/valtio-fsm/blob/e130d8462b1e3f3b9ad04f79c2f25bb6904906cd/src/types.ts#L77)
 
@@ -58,7 +60,9 @@ Whether transition history is being tracked
 
 ### historySize
 
-> **historySize**: `number`
+```ts
+historySize: number;
+```
 
 Defined in: [types.ts:79](https://github.com/valtiojs/valtio-fsm/blob/e130d8462b1e3f3b9ad04f79c2f25bb6904906cd/src/types.ts#L79)
 
@@ -68,7 +72,9 @@ Maximum number of history items to store
 
 ### state
 
-> **state**: `TState`
+```ts
+state: TState;
+```
 
 Defined in: [types.ts:71](https://github.com/valtiojs/valtio-fsm/blob/e130d8462b1e3f3b9ad04f79c2f25bb6904906cd/src/types.ts#L71)
 

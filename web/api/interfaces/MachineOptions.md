@@ -1,7 +1,3 @@
-[**valtio-fsm**](../README.md)
-
-***
-
 [valtio-fsm](../globals.md) / MachineOptions
 
 # Interface: MachineOptions\<TState\>
@@ -22,7 +18,9 @@ String literal type representing valid states
 
 ### enableHistory?
 
-> `optional` **enableHistory**: `boolean`
+```ts
+optional enableHistory: boolean;
+```
 
 Defined in: [types.ts:239](https://github.com/valtiojs/valtio-fsm/blob/e130d8462b1e3f3b9ad04f79c2f25bb6904906cd/src/types.ts#L239)
 
@@ -32,7 +30,9 @@ Whether to enable transition history tracking
 
 ### historySize?
 
-> `optional` **historySize**: `number`
+```ts
+optional historySize: number;
+```
 
 Defined in: [types.ts:241](https://github.com/valtiojs/valtio-fsm/blob/e130d8462b1e3f3b9ad04f79c2f25bb6904906cd/src/types.ts#L241)
 
@@ -42,7 +42,9 @@ Maximum number of history entries to keep
 
 ### onTransition?
 
-> `optional` **onTransition**: [`TransitionListener`](../type-aliases/TransitionListener.md)\<`TState`\>
+```ts
+optional onTransition: TransitionListener<TState>;
+```
 
 Defined in: [types.ts:243](https://github.com/valtiojs/valtio-fsm/blob/e130d8462b1e3f3b9ad04f79c2f25bb6904906cd/src/types.ts#L243)
 

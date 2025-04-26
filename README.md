@@ -6,8 +6,6 @@
 # Valtio FSM
 
 > Try out the [visual editor](https://valtio-fsm.vercel.app/)
-
-> Checkout the [docs](./docs/README.md) on github
 > or check out the [docs website](https://valtio-fsm-docs.vercel.app/)
 
 A reactive finite state machine library built on top of [Valtio](https://github.com/pmndrs/valtio) with inspiration from [Simple State Machine](https://github.com/akhil0001/simple-state-machine/blob/HEAD/packages/core/README.md).

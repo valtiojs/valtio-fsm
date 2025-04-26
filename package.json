@@ -43,7 +43,11 @@
     "bench": "vitest bench",
     "coverage": "vitest run --coverage",
     "test:ui": "vitest --ui",
-    "docs": "typedoc"
+    "docs": "pnpm run web:build && pnpm github",
+    "github": "typedoc --exclude web",
+    "preweb": "cd web && typedoc",
+    "web:build": "cd web && vitepress build",
+    "web:dev": "cd web && vitepress dev"
   },
   "files": [
     "src",
@@ -80,8 +84,10 @@
     "tsup": "^8.4.0",
     "typedoc": "^0.28.3",
     "typedoc-plugin-markdown": "^4.6.3",
+    "typedoc-vitepress-theme": "^1.1.2",
     "typescript": "~5.7.2",
     "vite": "^6.2.6",
+    "vitepress": "^1.6.3",
     "vitest": "^3.0.9"
   },
   "packageManager": "pnpm@9.15.5+sha512.845196026aab1cc3f098a0474b64dfbab2afe7a1b4e91dd86895d8e4aa32a7a6d03049e2d0ad770bbe4de023a7122fb68c1a1d6e0d033c7076085f9d5d4800d4"

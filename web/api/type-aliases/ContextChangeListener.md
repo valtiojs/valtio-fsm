@@ -1,12 +1,10 @@
-[**valtio-fsm**](../README.md)
-
-***
-
 [valtio-fsm](../globals.md) / ContextChangeListener
 
 # Type Alias: ContextChangeListener()\<TContext\>
 
-> **ContextChangeListener**\<`TContext`\> = (`context`, `changes`) => `void`
+```ts
+type ContextChangeListener<TContext> = (context, changes) => void;
+```
 
 Defined in: [types.ts:56](https://github.com/valtiojs/valtio-fsm/blob/e130d8462b1e3f3b9ad04f79c2f25bb6904906cd/src/types.ts#L56)
 

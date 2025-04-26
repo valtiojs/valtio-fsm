@@ -1,7 +1,3 @@
-[**valtio-fsm**](../README.md)
-
-***
-
 [valtio-fsm](../globals.md) / ChainableStateMachine
 
 # Interface: ChainableStateMachine\<TState, TContext\>
@@ -28,7 +24,9 @@ Context data type for the state machine
 
 ### context
 
-> `readonly` **context**: `TContext`
+```ts
+readonly context: TContext;
+```
 
 Defined in: [types.ts:94](https://github.com/valtiojs/valtio-fsm/blob/e130d8462b1e3f3b9ad04f79c2f25bb6904906cd/src/types.ts#L94)
 
@@ -38,7 +36,9 @@ Current context data (read-only)
 
 ### current
 
-> `readonly` **current**: `TState`
+```ts
+readonly current: TState;
+```
 
 Defined in: [types.ts:92](https://github.com/valtiojs/valtio-fsm/blob/e130d8462b1e3f3b9ad04f79c2f25bb6904906cd/src/types.ts#L92)
 
@@ -48,7 +48,9 @@ Current state (read-only)
 
 ### addTransition()
 
-> **addTransition**(`state`, `transition`): `ChainableStateMachine`\<`TState`, `TContext`\>
+```ts
+addTransition(state, transition): ChainableStateMachine<TState, TContext>;
+```
 
 Defined in: [types.ts:157](https://github.com/valtiojs/valtio-fsm/blob/e130d8462b1e3f3b9ad04f79c2f25bb6904906cd/src/types.ts#L157)
 
@@ -76,7 +78,9 @@ Target state
 
 ### canMoveTo()
 
-> **canMoveTo**(`state`): `boolean`
+```ts
+canMoveTo(state): boolean;
+```
 
 Defined in: [types.ts:118](https://github.com/valtiojs/valtio-fsm/blob/e130d8462b1e3f3b9ad04f79c2f25bb6904906cd/src/types.ts#L118)
 
@@ -98,7 +102,9 @@ Target state to check
 
 ### clearHistory()
 
-> **clearHistory**(): `ChainableStateMachine`\<`TState`, `TContext`\>
+```ts
+clearHistory(): ChainableStateMachine<TState, TContext>;
+```
 
 Defined in: [types.ts:185](https://github.com/valtiojs/valtio-fsm/blob/e130d8462b1e3f3b9ad04f79c2f25bb6904906cd/src/types.ts#L185)
 
@@ -112,7 +118,9 @@ Clear transition history
 
 ### enableHistory()
 
-> **enableHistory**(`enable?`): `ChainableStateMachine`\<`TState`, `TContext`\>
+```ts
+enableHistory(enable?): ChainableStateMachine<TState, TContext>;
+```
 
 Defined in: [types.ts:190](https://github.com/valtiojs/valtio-fsm/blob/e130d8462b1e3f3b9ad04f79c2f25bb6904906cd/src/types.ts#L190)
 
@@ -134,7 +142,9 @@ Whether to enable history
 
 ### fire()
 
-> **fire**(`eventName`, `payload?`): `ChainableStateMachine`\<`TState`, `TContext`\>
+```ts
+fire(eventName, payload?): ChainableStateMachine<TState, TContext>;
+```
 
 Defined in: [types.ts:228](https://github.com/valtiojs/valtio-fsm/blob/e130d8462b1e3f3b9ad04f79c2f25bb6904906cd/src/types.ts#L228)
 
@@ -162,7 +172,9 @@ Optional data to pass to handlers
 
 ### getHistory()
 
-> **getHistory**(): [`TransitionHistoryItem`](TransitionHistoryItem.md)\<`TState`\>[]
+```ts
+getHistory(): TransitionHistoryItem<TState>[];
+```
 
 Defined in: [types.ts:183](https://github.com/valtiojs/valtio-fsm/blob/e130d8462b1e3f3b9ad04f79c2f25bb6904906cd/src/types.ts#L183)
 
@@ -176,7 +188,9 @@ Get the transition history array
 
 ### getStore()
 
-> **getStore**(): [`MachineStore`](MachineStore.md)\<`TState`, `TContext`\>
+```ts
+getStore(): MachineStore<TState, TContext>;
+```
 
 Defined in: [types.ts:96](https://github.com/valtiojs/valtio-fsm/blob/e130d8462b1e3f3b9ad04f79c2f25bb6904906cd/src/types.ts#L96)
 
@@ -190,7 +204,9 @@ Get the internal Valtio store for use with useSnapshot
 
 ### isIn()
 
-> **isIn**(`state`): `boolean`
+```ts
+isIn(state): boolean;
+```
 
 Defined in: [types.ts:113](https://github.com/valtiojs/valtio-fsm/blob/e130d8462b1e3f3b9ad04f79c2f25bb6904906cd/src/types.ts#L113)
 
@@ -212,7 +228,9 @@ State to check
 
 ### moveTo()
 
-> **moveTo**(`state`, `payload?`): `ChainableStateMachine`\<`TState`, `TContext`\>
+```ts
+moveTo(state, payload?): ChainableStateMachine<TState, TContext>;
+```
 
 Defined in: [types.ts:102](https://github.com/valtiojs/valtio-fsm/blob/e130d8462b1e3f3b9ad04f79c2f25bb6904906cd/src/types.ts#L102)
 
@@ -240,7 +258,9 @@ Optional data to pass to transition handlers
 
 ### off()
 
-> **off**(`eventName`, `handler?`): `ChainableStateMachine`\<`TState`, `TContext`\>
+```ts
+off(eventName, handler?): ChainableStateMachine<TState, TContext>;
+```
 
 Defined in: [types.ts:219](https://github.com/valtiojs/valtio-fsm/blob/e130d8462b1e3f3b9ad04f79c2f25bb6904906cd/src/types.ts#L219)
 
@@ -268,7 +288,9 @@ Specific handler to remove (removes all if omitted)
 
 ### on()
 
-> **on**(`eventName`, `handler`): `ChainableStateMachine`\<`TState`, `TContext`\>
+```ts
+on(eventName, handler): ChainableStateMachine<TState, TContext>;
+```
 
 Defined in: [types.ts:201](https://github.com/valtiojs/valtio-fsm/blob/e130d8462b1e3f3b9ad04f79c2f25bb6904906cd/src/types.ts#L201)
 
@@ -296,7 +318,9 @@ Function to call when event fires
 
 ### once()
 
-> **once**(`eventName`, `handler`): `ChainableStateMachine`\<`TState`, `TContext`\>
+```ts
+once(eventName, handler): ChainableStateMachine<TState, TContext>;
+```
 
 Defined in: [types.ts:210](https://github.com/valtiojs/valtio-fsm/blob/e130d8462b1e3f3b9ad04f79c2f25bb6904906cd/src/types.ts#L210)
 
@@ -324,7 +348,9 @@ Function to call when event fires (once)
 
 ### onContextChange()
 
-> **onContextChange**(`listener`): () => `void`
+```ts
+onContextChange(listener): () => void;
+```
 
 Defined in: [types.ts:141](https://github.com/valtiojs/valtio-fsm/blob/e130d8462b1e3f3b9ad04f79c2f25bb6904906cd/src/types.ts#L141)
 
@@ -342,7 +368,9 @@ Function to call when context changes
 
 Function to remove the listener
 
-> (): `void`
+```ts
+(): void;
+```
 
 ##### Returns
 
@@ -352,7 +380,9 @@ Function to remove the listener
 
 ### onTransition()
 
-> **onTransition**(`listener`): `ChainableStateMachine`\<`TState`, `TContext`\>
+```ts
+onTransition(listener): ChainableStateMachine<TState, TContext>;
+```
 
 Defined in: [types.ts:124](https://github.com/valtiojs/valtio-fsm/blob/e130d8462b1e3f3b9ad04f79c2f25bb6904906cd/src/types.ts#L124)
 
@@ -374,7 +404,9 @@ Function to call on transition
 
 ### removeTransition()
 
-> **removeTransition**(`state`, `transition`): `ChainableStateMachine`\<`TState`, `TContext`\>
+```ts
+removeTransition(state, transition): ChainableStateMachine<TState, TContext>;
+```
 
 Defined in: [types.ts:166](https://github.com/valtiojs/valtio-fsm/blob/e130d8462b1e3f3b9ad04f79c2f25bb6904906cd/src/types.ts#L166)
 
@@ -402,7 +434,9 @@ Target state to remove
 
 ### resetContext()
 
-> **resetContext**(): `ChainableStateMachine`\<`TState`, `TContext`\>
+```ts
+resetContext(): ChainableStateMachine<TState, TContext>;
+```
 
 Defined in: [types.ts:107](https://github.com/valtiojs/valtio-fsm/blob/e130d8462b1e3f3b9ad04f79c2f25bb6904906cd/src/types.ts#L107)
 
@@ -416,7 +450,12 @@ Reset context to initial values
 
 ### setHandler()
 
-> **setHandler**(`state`, `type`, `handler`): `ChainableStateMachine`\<`TState`, `TContext`\>
+```ts
+setHandler(
+   state, 
+   type, 
+handler): ChainableStateMachine<TState, TContext>;
+```
 
 Defined in: [types.ts:176](https://github.com/valtiojs/valtio-fsm/blob/e130d8462b1e3f3b9ad04f79c2f25bb6904906cd/src/types.ts#L176)
 
@@ -450,7 +489,9 @@ Function to call
 
 ### setHistorySize()
 
-> **setHistorySize**(`size`): `ChainableStateMachine`\<`TState`, `TContext`\>
+```ts
+setHistorySize(size): ChainableStateMachine<TState, TContext>;
+```
 
 Defined in: [types.ts:195](https://github.com/valtiojs/valtio-fsm/blob/e130d8462b1e3f3b9ad04f79c2f25bb6904906cd/src/types.ts#L195)
 
@@ -472,7 +513,9 @@ Maximum number of history items
 
 ### setTransitions()
 
-> **setTransitions**(`state`, `transitions`): `ChainableStateMachine`\<`TState`, `TContext`\>
+```ts
+setTransitions(state, transitions): ChainableStateMachine<TState, TContext>;
+```
 
 Defined in: [types.ts:148](https://github.com/valtiojs/valtio-fsm/blob/e130d8462b1e3f3b9ad04f79c2f25bb6904906cd/src/types.ts#L148)
 
@@ -500,7 +543,9 @@ Array of allowed target states
 
 ### whenIn()
 
-> **whenIn**(`state`, `callback`): `ChainableStateMachine`\<`TState`, `TContext`\>
+```ts
+whenIn(state, callback): ChainableStateMachine<TState, TContext>;
+```
 
 Defined in: [types.ts:132](https://github.com/valtiojs/valtio-fsm/blob/e130d8462b1e3f3b9ad04f79c2f25bb6904906cd/src/types.ts#L132)
 

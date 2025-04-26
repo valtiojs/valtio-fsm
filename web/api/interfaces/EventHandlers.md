@@ -1,7 +1,3 @@
-[**valtio-fsm**](../README.md)
-
-***
-
 [valtio-fsm](../globals.md) / EventHandlers
 
 # Interface: EventHandlers\<TContext\>
@@ -20,4 +16,6 @@ Context data type for the state machine
 
 ## Indexable
 
-\[`eventName`: `string`\]: `Set`\<[`EventHandler`](../type-aliases/EventHandler.md)\<`TContext`\>\>
+```ts
+[eventName: string]: Set<EventHandler<TContext>>
+```

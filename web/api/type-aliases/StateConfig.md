@@ -1,12 +1,10 @@
-[**valtio-fsm**](../README.md)
-
-***
-
 [valtio-fsm](../globals.md) / StateConfig
 
 # Type Alias: StateConfig\<TState, TContext\>
 
-> **StateConfig**\<`TState`, `TContext`\> = `{ [key in TState]?: { onEnter?: (context: TContext, payload?: unknown) => void; onExit?: (context: TContext, payload?: unknown) => void; transitions: TState[] } }`
+```ts
+type StateConfig<TState, TContext> = { [key in TState]?: { onEnter?: (context: TContext, payload?: unknown) => void; onExit?: (context: TContext, payload?: unknown) => void; transitions: TState[] } };
+```
 
 Defined in: [types.ts:11](https://github.com/valtiojs/valtio-fsm/blob/e130d8462b1e3f3b9ad04f79c2f25bb6904906cd/src/types.ts#L11)
 

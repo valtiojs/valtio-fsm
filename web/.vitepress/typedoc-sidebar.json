@@ -1,0 +1,72 @@
+[
+  {
+    "text": "Interfaces",
+    "collapsed": true,
+    "items": [
+      {
+        "text": "ChainableStateMachine",
+        "link": "/api/interfaces/ChainableStateMachine.md"
+      },
+      {
+        "text": "EventHandlers",
+        "link": "/api/interfaces/EventHandlers.md"
+      },
+      {
+        "text": "InternalMachine",
+        "link": "/api/interfaces/InternalMachine.md"
+      },
+      {
+        "text": "MachineOptions",
+        "link": "/api/interfaces/MachineOptions.md"
+      },
+      {
+        "text": "MachineStore",
+        "link": "/api/interfaces/MachineStore.md"
+      },
+      {
+        "text": "TransitionHistoryItem",
+        "link": "/api/interfaces/TransitionHistoryItem.md"
+      }
+    ]
+  },
+  {
+    "text": "Type Aliases",
+    "collapsed": true,
+    "items": [
+      {
+        "text": "ContextChangeListener",
+        "link": "/api/type-aliases/ContextChangeListener.md"
+      },
+      {
+        "text": "EventHandler",
+        "link": "/api/type-aliases/EventHandler.md"
+      },
+      {
+        "text": "StateCallback",
+        "link": "/api/type-aliases/StateCallback.md"
+      },
+      {
+        "text": "StateConfig",
+        "link": "/api/type-aliases/StateConfig.md"
+      },
+      {
+        "text": "TaskContext",
+        "link": "/api/type-aliases/TaskContext.md"
+      },
+      {
+        "text": "TransitionListener",
+        "link": "/api/type-aliases/TransitionListener.md"
+      }
+    ]
+  },
+  {
+    "text": "Functions",
+    "collapsed": true,
+    "items": [
+      {
+        "text": "createMachine",
+        "link": "/api/functions/createMachine.md"
+      }
+    ]
+  }
+]

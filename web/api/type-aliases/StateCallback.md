@@ -1,12 +1,10 @@
-[**valtio-fsm**](../README.md)
-
-***
-
 [valtio-fsm](../globals.md) / StateCallback
 
 # Type Alias: StateCallback()\<TContext\>
 
-> **StateCallback**\<`TContext`\> = (`context`) => `void`
+```ts
+type StateCallback<TContext> = (context) => void;
+```
 
 Defined in: [types.ts:50](https://github.com/valtiojs/valtio-fsm/blob/e130d8462b1e3f3b9ad04f79c2f25bb6904906cd/src/types.ts#L50)
 

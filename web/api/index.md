@@ -1,7 +1,3 @@
-**valtio-fsm**
-
-***
-
 ![NPM Version](https://img.shields.io/npm/v/valtio-fsm?style=flat-square&color=%2313c2c2)
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/valtiojs/valtio-fsm/test.yml?style=flat-square&color=%2313c2c2)
 ![npm bundle size](https://img.shields.io/bundlephobia/minzip/valtio-fsm?style=flat-square&color=%2313c2c2)
