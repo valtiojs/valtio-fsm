@@ -3,8 +3,48 @@
     "./src/index.ts"
   ],
   "out": "docs",
-  "excludePrivate": true,
+  "excludePrivate": false,
   "excludeProtected": false,
   "excludeExternals": true,
-  "theme": "default"
+  "theme": "default",
+  "navigation": {
+    "includeCategories": true,
+    "includeGroups": true
+  },
+  "categorizeByGroup": true,
+  "categoryOrder": [
+    "Core API",
+    "Event System",
+    "Listeners and Callbacks",
+    "Runtime Configuration",
+    "History Management",
+    "*"
+  ],
+  "navigationLinks": {
+    "API": "modules.html",
+    "GitHub": "https://github.com/valtiojs/valtio-fsm"
+  },
+  "sidebarLinks": {
+    "Core API": "interfaces/ChainableStateMachine.html",
+    "Function Reference": "functions/createMachine.html"
+  },
+  "highlightLanguages": [
+    "tsx",
+    "jsx",
+    "typescript",
+    "javascript",
+    "json",
+    "css",
+    "html",
+    "shellscript"
+  ],
+  "disableSources": false,
+  "hideGenerator": true,
+  "cleanOutputDir": true,
+  "jsDocCompatibility": true,
+  "githubPages": false,
+  "excludeInternal": false,
+  "excludeNotDocumented": false,
+  "disableGit": false,
+  "pretty": true,
 }

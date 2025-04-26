@@ -17,7 +17,37 @@ import type {
  * @param stateConfig - Configuration object defining states and transitions
  * @param initialContext - Initial context data (defaults to empty object)
  * @param options - Additional configuration options
- * @returns A chainable state machine instance
+ * @returns A chainable state machine instance with the following methods:
+ * 
+ * ## Core API
+ * - {@link ChainableStateMachine.moveTo | moveTo(state, payload?)} - Transition to a new state
+ * - {@link ChainableStateMachine.isIn | isIn(state)} - Check if machine is in a specific state
+ * - {@link ChainableStateMachine.canMoveTo | canMoveTo(state)} - Check if transition to a specific state is allowed
+ * - {@link ChainableStateMachine.getStore | getStore()} - Get the internal Valtio store for use with useSnapshot
+ * - {@link ChainableStateMachine.resetContext | resetContext()} - Reset context to initial values
+ * 
+ * ## Event System
+ * - {@link ChainableStateMachine.on | on(eventName, handler)} - Register event handler
+ * - {@link ChainableStateMachine.once | once(eventName, handler)} - Register one-time event handler
+ * - {@link ChainableStateMachine.off | off(eventName, handler?)} - Remove event handler(s)
+ * - {@link ChainableStateMachine.fire | fire(eventName, payload?)} - Fire an event
+ * 
+ * ## Listeners and Callbacks
+ * - {@link ChainableStateMachine.onTransition | onTransition(listener)} - Add a listener for state transitions
+ * - {@link ChainableStateMachine.whenIn | whenIn(state, callback)} - Register a callback for a specific state
+ * - {@link ChainableStateMachine.onContextChange | onContextChange(listener)} - Add a listener for context changes
+ * 
+ * ## Runtime Configuration
+ * - {@link ChainableStateMachine.setTransitions | setTransitions(state, transitions)} - Set allowed transitions for a state
+ * - {@link ChainableStateMachine.addTransition | addTransition(state, transition)} - Add a single allowed transition
+ * - {@link ChainableStateMachine.removeTransition | removeTransition(state, transition)} - Remove an allowed transition
+ * - {@link ChainableStateMachine.setHandler | setHandler(state, type, handler)} - Set a state handler (onEnter or onExit)
+ * 
+ * ## History Management
+ * - {@link ChainableStateMachine.getHistory | getHistory()} - Get the transition history array
+ * - {@link ChainableStateMachine.clearHistory | clearHistory()} - Clear transition history
+ * - {@link ChainableStateMachine.enableHistory | enableHistory(enable?)} - Enable or disable history tracking
+ * - {@link ChainableStateMachine.setHistorySize | setHistorySize(size)} - Set maximum history size
  * 
  * @example
  * ```ts
@@ -96,21 +126,53 @@ const createMachine = <
 
 	// Create the chainable interface
 	const machine: ChainableStateMachine<TState, TContext> = {
-		// Expose current state and context as getters that read from the store
+		/**
+		 * Current state of the machine (read-only)
+		 * @readonly
+		 * @category Core Properties
+		 */
 		get current() {
 			return store.state;
 		},
 
+		/**
+		 * Current context data of the machine (read-only)
+		 * @readonly
+		 * @category Core Properties
+		 */
 		get context() {
 			return store.context;
 		},
 
-		// Expose the store directly - this is what you'll use with useSnapshot in React
+		/**
+		 * Returns the internal Valtio store for use with useSnapshot in React components
+		 * @returns The internal store object with state, context, and history
+		 * @category Core API
+		 * @example
+		 * ```tsx
+		 * function MyComponent() {
+		 *   const state = useSnapshot(machine.getStore());
+		 *   return <div>Current state: {state.state}</div>;
+		 * }
+		 * ```
+		 */
 		getStore() {
 			return store;
 		},
 
-		// Move to a new state
+		/**
+		 * Transitions the machine to a new state
+		 * @param state - Target state to transition to
+		 * @param payload - Optional data to pass to transition handlers
+		 * @returns The machine instance for chaining
+		 * @category Core API
+		 * @example
+		 * ```ts
+		 * machine.moveTo('loading');
+		 * // With payload
+		 * machine.moveTo('success', { data: response });
+		 * ```
+		 */
 		moveTo(state, payload = {}) {
 			// Validate the transition
 			const validTransitions =
@@ -169,6 +231,16 @@ const createMachine = <
 		},
 
 		// Reset context to initial values
+		/**
+		 * Resets the context to its initial values
+		 * @returns The machine instance for chaining
+		 * @category Core API
+		 * @example
+		 * ```ts
+		 * // Reset context data to initial values
+		 * machine.resetContext();
+		 * ```
+		 */
 		resetContext() {
 			// Simply replace the entire context with a fresh deep copy of the initial context
 			store.context = proxy(deepClone(clonedInitialContext));
@@ -176,25 +248,70 @@ const createMachine = <
 			return this;
 		},
 
-		// Check if in a specific state
+		/**
+		 * Checks if the machine is in a specific state
+		 * @param state - State to check against current state
+		 * @returns True if the machine is in the specified state
+		 * @category Core API
+		 * @example
+		 * ```ts
+		 * if (machine.isIn('loading')) {
+		 *   showLoadingIndicator();
+		 * }
+		 * ```
+		 */
 		isIn(state) {
 			return store.state === state;
 		},
 
-		// Check if can transition to a state
+		/**
+		 * Checks if transition to a specific state is allowed from current state
+		 * @param state - Target state to check
+		 * @returns True if the transition is valid
+		 * @category Core API
+		 * @example
+		 * ```ts
+		 * if (machine.canMoveTo('success')) {
+		 *   submitButton.disabled = false;
+		 * }
+		 * ```
+		 */
 		canMoveTo(state) {
 			const validTransitions =
 				mutableStateConfig[store.state]?.transitions || [];
 			return validTransitions.includes(state);
 		},
 
-		// Add transition listener
+		/**
+		 * Adds a listener for state transitions
+		 * @param listener - Function to call when state transitions occur
+		 * @returns The machine instance for chaining
+		 * @category Listeners and Callbacks
+		 * @example
+		 * ```ts
+		 * machine.onTransition((from, to, payload) => {
+		 *   console.log(`Transitioned from ${from} to ${to}`);
+		 * });
+		 * ```
+		 */
 		onTransition(listener) {
 			internalMachine.transitionListeners.add(listener);
 			return this;
 		},
 
-		// Subscribe to specific state
+		/**
+		 * Registers a callback for a specific state
+		 * @param state - State to watch for
+		 * @param callback - Function to call when machine enters this state
+		 * @returns The machine instance for chaining
+		 * @category Listeners and Callbacks
+		 * @example
+		 * ```ts
+		 * machine.whenIn('loading', (context) => {
+		 *   startLoadingIndicator();
+		 * });
+		 * ```
+		 */
 		whenIn(state, callback) {
 			// Get or create the callback set for this state
 			if (!internalMachine.stateCallbacks.has(state)) {
@@ -214,7 +331,21 @@ const createMachine = <
 			return this;
 		},
 
-		// 2. Then update the onContextChange method:
+		/**
+		 * Adds a listener for context changes
+		 * @param listener - Function to call when context properties change
+		 * @returns Function to remove the listener
+		 * @category Listeners and Callbacks
+		 * @example
+		 * ```ts
+		 * const unsubscribe = machine.onContextChange((context, changes) => {
+		 *   console.log('Context changed:', changes);
+		 * });
+		 * 
+		 * // Later, to stop listening:
+		 * unsubscribe();
+		 * ```
+		 */
 		onContextChange(listener) {
 			internalMachine.contextListeners.add(listener);
 
@@ -262,12 +393,29 @@ const createMachine = <
 			return unsub;
 		},
 
-		// Get transition history
+		/**
+		 * Returns the transition history array
+		 * @returns Array of transition history items
+		 * @category History Management
+		 * @example
+		 * ```ts
+		 * const history = machine.getHistory();
+		 * console.log(`Last transition: ${history[history.length-1].from} -> ${history[history.length-1].to}`);
+		 * ```
+		 */
 		getHistory() {
 			return store.historyEnabled ? [...store.history] : [];
 		},
 
-		// Clear transition history
+		/**
+		 * Clears the transition history
+		 * @returns The machine instance for chaining
+		 * @category History Management
+		 * @example
+		 * ```ts
+		 * machine.clearHistory();
+		 * ```
+		 */
 		clearHistory() {
 			if (store.historyEnabled) {
 				store.history = [];
@@ -275,7 +423,20 @@ const createMachine = <
 			return this;
 		},
 
-		// Enable or disable history tracking
+		/**
+		 * Enables or disables history tracking
+		 * @param enable - Whether to enable history (defaults to true)
+		 * @returns The machine instance for chaining
+		 * @category History Management
+		 * @example
+		 * ```ts
+		 * // Enable history tracking
+		 * machine.enableHistory();
+		 * 
+		 * // Disable history tracking
+		 * machine.enableHistory(false);
+		 * ```
+		 */
 		enableHistory(enable = true) {
 			store.historyEnabled = enable;
 			if (!enable) {
@@ -284,7 +445,17 @@ const createMachine = <
 			return this;
 		},
 
-		// Set history size
+		/**
+		 * Sets the maximum history size
+		 * @param size - Maximum number of history items to keep
+		 * @returns The machine instance for chaining
+		 * @category History Management
+		 * @example
+		 * ```ts
+		 * // Keep last 50 transitions in history
+		 * machine.setHistorySize(50);
+		 * ```
+		 */
 		setHistorySize(size) {
 			store.historySize = size;
 			// Trim history if needed
@@ -294,7 +465,18 @@ const createMachine = <
 			return this;
 		},
 
-		// Set allowed transitions for a state
+		/**
+		 * Sets allowed transitions for a state
+		 * @param state - State to configure
+		 * @param transitions - Array of allowed target states
+		 * @returns The machine instance for chaining
+		 * @category Runtime Configuration
+		 * @example
+		 * ```ts
+		 * // Update the allowed transitions for the 'idle' state
+		 * machine.setTransitions('idle', ['loading', 'disabled']);
+		 * ```
+		 */
 		setTransitions(state, transitions) {
 			if (!mutableStateConfig[state]) {
 				mutableStateConfig[state] = { transitions: [] };
@@ -304,7 +486,18 @@ const createMachine = <
 			return this;
 		},
 
-		// Add a single transition to a state
+		/**
+		 * Adds a single allowed transition to a state
+		 * @param state - Source state
+		 * @param transition - Target state to allow
+		 * @returns The machine instance for chaining
+		 * @category Runtime Configuration
+		 * @example
+		 * ```ts
+		 * // Add a new possible transition from 'idle' to 'paused'
+		 * machine.addTransition('idle', 'paused');
+		 * ```
+		 */
 		addTransition(state, transition) {
 			if (!mutableStateConfig[state]) {
 				mutableStateConfig[state] = { transitions: [] };
@@ -321,7 +514,18 @@ const createMachine = <
 			return this;
 		},
 
-		// Remove a transition from a state
+		/**
+		 * Removes an allowed transition from a state
+		 * @param state - Source state
+		 * @param transition - Target state to disallow
+		 * @returns The machine instance for chaining
+		 * @category Runtime Configuration
+		 * @example
+		 * ```ts
+		 * // Remove the ability to transition from 'idle' to 'error'
+		 * machine.removeTransition('idle', 'error');
+		 * ```
+		 */
 		removeTransition(state, transition) {
 			if (
 				!mutableStateConfig[state] ||
@@ -337,7 +541,26 @@ const createMachine = <
 			return this;
 		},
 
-		// Set an event handler (onEnter or onExit) for a state
+		/**
+		 * Sets a state handler (onEnter or onExit)
+		 * @param state - State to configure
+		 * @param type - Handler type ("onEnter" or "onExit")
+		 * @param handler - Function to call when entering/exiting the state
+		 * @returns The machine instance for chaining
+		 * @category Runtime Configuration
+		 * @example
+		 * ```ts
+		 * // Add an entry action to the 'loading' state
+		 * machine.setHandler('loading', 'onEnter', (context) => {
+		 *   context.loadingStartTime = Date.now();
+		 * });
+		 * 
+		 * // Add an exit action to the 'loading' state
+		 * machine.setHandler('loading', 'onExit', (context) => {
+		 *   context.loadingTime = Date.now() - context.loadingStartTime;
+		 * });
+		 * ```
+		 */
 		setHandler(state, type, handler) {
 			if (!mutableStateConfig[state]) {
 				mutableStateConfig[state] = { transitions: [] };
@@ -347,6 +570,19 @@ const createMachine = <
 			return this;
 		},
 
+		/**
+		 * Registers an event handler
+		 * @param eventName - Event name to listen for
+		 * @param handler - Function to call when event fires
+		 * @returns The machine instance for chaining
+		 * @category Event System
+		 * @example
+		 * ```ts
+		 * machine.on('userLoggedIn', (context, payload) => {
+		 *   context.user = payload.user;
+		 * });
+		 * ```
+		 */
 		on(eventName: string, handler: EventHandler<TContext>) {
 			if (!internalMachine.eventHandlers[eventName]) {
 				internalMachine.eventHandlers[eventName] = new Set();
@@ -356,7 +592,20 @@ const createMachine = <
 			return this;
 		},
 
-		// Register a one-time event handler
+		/**
+		 * Registers a one-time event handler that runs once then is removed
+		 * @param eventName - Event name to listen for
+		 * @param handler - Function to call when event fires (once)
+		 * @returns The machine instance for chaining
+		 * @category Event System
+		 * @example
+		 * ```ts
+		 * machine.once('serverResponse', (context, payload) => {
+		 *   // This handler will only run the first time 'serverResponse' is fired
+		 *   context.firstResponseData = payload;
+		 * });
+		 * ```
+		 */
 		once(eventName: string, handler: EventHandler<TContext>) {
 			if (!internalMachine.oneTimeEventHandlers[eventName]) {
 				internalMachine.oneTimeEventHandlers[eventName] = new Set();
@@ -366,7 +615,21 @@ const createMachine = <
 			return this;
 		},
 
-		// Remove an event handler
+		/**
+		 * Removes event handler(s)
+		 * @param eventName - Event name
+		 * @param handler - Specific handler to remove (removes all if omitted)
+		 * @returns The machine instance for chaining
+		 * @category Event System
+		 * @example
+		 * ```ts
+		 * // Remove a specific handler
+		 * machine.off('userAction', specificHandler);
+		 * 
+		 * // Remove all handlers for an event
+		 * machine.off('userAction');
+		 * ```
+		 */
 		off(eventName: string, handler?: EventHandler<TContext>) {
 			if (!handler) {
 				// Remove all handlers for this event
@@ -380,7 +643,21 @@ const createMachine = <
 			return this;
 		},
 
-		// Fire an event
+		/**
+		 * Fires an event, triggering all registered handlers
+		 * @param eventName - Event name to fire
+		 * @param payload - Optional data to pass to handlers
+		 * @returns The machine instance for chaining
+		 * @category Event System
+		 * @example
+		 * ```ts
+		 * // Fire an event without payload
+		 * machine.fire('initialize');
+		 * 
+		 * // Fire an event with payload
+		 * machine.fire('dataReceived', { id: 123, name: 'Example' });
+		 * ```
+		 */
 		fire(eventName: string, payload?: unknown) {
 			// Process regular handlers
 			if (internalMachine.eventHandlers[eventName]) {
