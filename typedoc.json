@@ -2,7 +2,16 @@
   "entryPoints": [
     "./src/index.ts"
   ],
-  "out": "docs",
+  "outputs": [
+    {
+      "name": "html",
+      "path": "./web"
+    },
+    {
+      "name": "markdown",
+      "path": "./docs"
+    }
+  ],
   "excludePrivate": false,
   "excludeProtected": false,
   "excludeExternals": true,
@@ -13,7 +22,7 @@
   },
   "categorizeByGroup": true,
   "categoryOrder": [
-    "Core API",
+    "API",
     "Event System",
     "Listeners and Callbacks",
     "Runtime Configuration",
@@ -21,12 +30,12 @@
     "*"
   ],
   "navigationLinks": {
-    "API": "modules.html",
+    "API": "/modules.html",
     "GitHub": "https://github.com/valtiojs/valtio-fsm"
   },
   "sidebarLinks": {
-    "Core API": "interfaces/ChainableStateMachine.html",
-    "Function Reference": "functions/createMachine.html"
+    "Core API": "/interfaces/ChainableStateMachine.html",
+    "Function Reference": "/functions/createMachine.html"
   },
   "highlightLanguages": [
     "tsx",
@@ -47,4 +56,7 @@
   "excludeNotDocumented": false,
   "disableGit": false,
   "pretty": true,
+  "plugin": [
+    "typedoc-plugin-markdown"
+  ]
 }

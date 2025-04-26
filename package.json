@@ -79,6 +79,7 @@
     "react": "^19.1.0",
     "tsup": "^8.4.0",
     "typedoc": "^0.28.3",
+    "typedoc-plugin-markdown": "^4.6.3",
     "typescript": "~5.7.2",
     "vite": "^6.2.6",
     "vitest": "^3.0.9"
