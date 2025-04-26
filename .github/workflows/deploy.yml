@@ -42,14 +42,6 @@ jobs:
       - name: Build TypeDoc API documentation
         run: pnpm run docs
         
-      - name: Copy API documentation to web directory
-        run: |
-          mkdir -p web/api
-          cp -r api/* web/api/
-          
-      - name: Build VitePress site
-        run: pnpm run docs:build
-        
       - name: Deploy to Vercel
         uses: amondnet/vercel-action@v25
         with:
